@@ -1,0 +1,4 @@
+user:gk
+password:sql9876
+host:localhost
+database:cine_db 

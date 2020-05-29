@@ -1,0 +1,74 @@
+CREATE DATABASE IF NOT EXISTS cine_db; 
+
+USE cine_db;
+
+CREATE TABLE IF NOT EXISTS Peliculas (
+  ID_Pelicula INT(11) NOT NULL AUTO_INCREMENT,
+  Nombre VARCHAR(50) NOT NULL,
+  Clasificacion VARCHAR(5) NOT NULL,
+  Duracion TIME  NOT NULL,
+  Genero VARCHAR(30) NOT NULL,
+  Sinopsis VARCHAR(400) NOT NULL,
+  PRIMARY KEY (ID_Pelicula)
+  )ENGINE = InnoDB;
+  
+CREATE TABLE IF NOT EXISTS Administradores (
+  ID_Administrador  INT(11) NOT NULL AUTO_INCREMENT,
+  Contrasenia VARCHAR(10) NOT NULL,
+  Nombre VARCHAR(50) NOT NULL,
+  Apellido_Paterno VARCHAR(50) NOT NULL,
+  Apellido_Materno VARCHAR(50) NOT NULL,
+  Puesto VARCHAR(50) NOT NULL,
+  PRIMARY KEY (ID_Administrador)
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Usuarios (
+  ID_Usuario INT(11) NOT NULL AUTO_INCREMENT,
+  Nombre VARCHAR(50) NOT NULL,
+  Apellido_Paterno VARCHAR(50) NOT NULL,
+  Apellido_Materno VARCHAR(50) NOT NULL,
+  Correo_Electronico VARCHAR(50) NOT NULL,
+  Contrasenia VARCHAR(10) NOT NULL,
+  PRIMARY KEY (ID_Usuario)
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Salas (
+  ID_Sala INT(11) NOT NULL AUTO_INCREMENT,
+  ID_Pelicula INT(11) NOT NULL,
+  Numero_Sala INT(11) NOT NULL,
+  Total_Asientos INT(11) NOT NULL,
+  Numero_Asiento INT(11) NOT NULL,
+  Letra_Asiento VARCHAR(2) NOT NULL,
+  PRIMARY KEY (ID_Sala, ID_Pelicula),
+  CONSTRAINT fkPeliculas_Salas FOREIGN KEY (ID_Pelicula)
+  REFERENCES Peliculas (ID_Pelicula)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Horarios (
+  ID_Horario INT(11) NOT NULL AUTO_INCREMENT,
+  ID_Pelicula INT(11) NOT NULL,
+  Hora TIME NOT NULL,
+  Fecha DATE NOT NULL,
+  PRIMARY KEY (ID_Horario, ID_Pelicula),
+  CONSTRAINT fkPeliculas_Horarios FOREIGN KEY (ID_Pelicula)
+  REFERENCES Peliculas (ID_Pelicula)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Tickets (
+  ID_Ticket INT(11) NOT NULL AUTO_INCREMENT,
+  ID_Usuario INT(11) NOT NULL,
+  ID_Pelicula INT(11) NOT NULL,
+  PRIMARY KEY (ID_Ticket, ID_Usuario,ID_Pelicula),
+  CONSTRAINT fkUsuarios_Tickets FOREIGN KEY (ID_Usuario)
+  REFERENCES Usuarios (ID_Usuario)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE,
+  CONSTRAINT fkPeliculas_Tickets FOREIGN KEY (ID_Pelicula)
+  REFERENCES Peliculas (ID_Pelicula)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE
+)ENGINE = InnoDB;
